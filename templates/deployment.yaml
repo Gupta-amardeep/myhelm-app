@@ -1,27 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: {{ include "myhelm-app.fullname" . }}
+  labels: 
+    {{- include "myhelm-app.labels" . | nindent 4 }}
 spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicacount }}
+{{- end }}
   selector:
     matchLabels:
-      app: {{ .Values.label }}
+      {{- include "myhelm-app.selectorLabels" . | nindent 6 }}
   replicas: {{ .Values.replicacount }} # tells deployment to run replicas pods matching the template
   template:
     metadata:
       labels:
-        app: {{ .Values.label }}
+        {{- include "myhelm-app.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "mychart.serviceAccountName" . }}
       containers:
-      - name: nginx
-        image: {{ .Values.image.repository }}
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: {{ .Values.service.containerport }}
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
         volumeMounts:
-        - name: nginx
+        - name: {{ .Release.Name }}
           mountPath: /usr/share/nginx/html
       
       volumes:
-      - name: nginx
+      - name: {{ .Release.Name }}
         configMap:
-          name: helm-config
+          name: {{ .Release.Name }}-configmap

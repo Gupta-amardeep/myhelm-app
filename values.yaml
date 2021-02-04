@@ -2,20 +2,33 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-name: myhelm
-
-label: mynginx
-
 replicacount: 3
 
 image:
   repository: nginx
   pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart version.
+  tag: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
 
 service:
-  type: NodePort
-  containerport: 80
-  targetport: 30036
+  # we have the option the service-type while installing the chart
+  # helm create <release> <path> -set service.type=NodePort
+  type: ClusterIP
+  port: 80
+
+autoscaling:
+  # This is applicable if cluster having HPA configured
+  enabled: false # Current set to false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
 
 pagecontent: |
   <h1> Welcome to sample helm deployment </h1>
