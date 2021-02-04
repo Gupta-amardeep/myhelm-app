@@ -5,3 +5,4 @@ metadata:
   name: {{ include "mychart.serviceAccountName" . }}
   labels:
     {{- include "mychart.labels" . | nindent 4 }}
+{{- end }}

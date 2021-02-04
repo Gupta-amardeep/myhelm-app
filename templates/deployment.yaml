@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "myhelm-app.fullname" . }}
+  name: {{ include "mychart.fullname" . }}
   labels: 
-    {{- include "myhelm-app.labels" . | nindent 4 }}
+    {{- include "mychart.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicacount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "myhelm-app.selectorLabels" . | nindent 6 }}
+      {{- include "mychart.selectorLabels" . | nindent 6 }}
   replicas: {{ .Values.replicacount }} # tells deployment to run replicas pods matching the template
   template:
     metadata:
       labels:
-        {{- include "myhelm-app.selectorLabels" . | nindent 8 }}
+        {{- include "mychart.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "mychart.serviceAccountName" . }}
       containers:
@@ -26,14 +26,14 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
         volumeMounts:
         - name: {{ .Release.Name }}
           mountPath: /usr/share/nginx/html
