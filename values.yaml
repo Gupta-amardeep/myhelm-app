@@ -1,0 +1,22 @@
+# Default values for myhelm-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+name: myhelm
+
+label: mynginx
+
+replicacount: 3
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  containerport: 80
+  targetport: 30036
+
+pagecontent: |
+  <h1> Welcome to sample helm deployment </h1>
+
