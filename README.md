@@ -1,30 +1,27 @@
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+## MYHELM-APP
 
-chmod 755 get_helm.sh
+It is a simple containerized microservice webapp that uses nginx webserver to deploy code on Kubernetes Cluster using Helm 3.0. Helm helps to deploy all the manifest required to run this application that includes services, deployments, configmap, serviceaccount etc.
 
-./get_helm.sh
+# Introduction
 
-helm version
+This chart bootstraps a webapp deployment on a Kubernetes cluster using the Helm package manager. Configuration values are provided in separate file to make this chart reusable as well as to support easy upgrade and rollback.
 
-which helm
+# Prerequisites
 
-Create chart:-
-helm create <chart>
-tree <chart>
+* Kuberntes cluster
+* Helm 3.0
 
-helm lint <chart> :-check issues in chart
+# Installing the chart
 
-helm install springboot --debug --dry-run springboot
+To install the chart with the release name _my-release_:
 
-hel template <chart> :- check values in templates
+> $ helm install my-release myhelm-app/
 
-helm install <appname> <chart>
+Tip: List all releases using helm list
 
-helm upgrade <appname> <chart>
+# Configuration
 
-stable rep add:-
-helm repo add stable https://charts.helm.sh/stable
+Service type can be set using --set argument during install to show the URL at the output of helm install. For Example
 
-helm search repo stable
+> $ helm install my-release myhelm-app/ --set service.type=NodePort/LoadBalancer
 
-helm install stable/mysql
