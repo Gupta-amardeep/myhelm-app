@@ -1,4 +1,4 @@
-## Myhelm-app
+### Myhelm-app
 
 myhelm-app is a simple containerized microservice webapp that uses nginx webserver to deploy code on Kubernetes Cluster using Helm 3.0. Helm helps to deploy all the manifest required to run this application that includes services, deployments, configmap, serviceaccount etc.
 
