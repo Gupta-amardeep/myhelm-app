@@ -1,6 +1,6 @@
 apiVersion: v2
 name: myhelm-app
-description: A helm chart for Hello World application configured on nginx hosted on kubernetes
+description: A helm chart for Welcome web application configured on nginx hosted on kubernetes
 type: application
 version: 0.1.1
 appVersion: 1.16.0
